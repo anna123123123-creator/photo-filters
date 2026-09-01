@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>照片滤镜工坊 · Photo Filters</title>
+<meta name="description" content="免费开源、纯浏览器运行的照片滤镜小工具：上传照片，一键应用灰度/复古/反色/马赛克等滤镜并下载。不上传服务器，全部本地处理。">
+<style>
+:root{--ink:#0A101E;--surface:#111a2c;--line:rgba(147,160,184,.18);--muted:#93A0B8;--text:#EAF0FA;--cyan:#19B8D4;--violet:#8B5CF6;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh;display:flex;flex-direction:column}
+header{padding:28px 32px 8px}
+h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-.3px}
+.accent{background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tagline{color:var(--muted);margin:8px 0 0;font-size:14px}
+main{flex:1;display:flex;flex-direction:column;align-items:center;padding:20px 32px 40px;gap:20px}
+.dropzone{width:100%;max-width:640px;border:1.5px dashed var(--line);border-radius:16px;padding:40px;text-align:center;cursor:pointer;transition:border-color .15s;background:var(--surface)}
+.dropzone:hover,.dropzone.drag{border-color:var(--cyan)}
+.dropzone p{color:var(--muted);margin:8px 0 0;font-size:13.5px}
+#fileInput{display:none}
+.stage{width:100%;max-width:640px;display:none}
+.stage.show{display:block}
+#canvas{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#000}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.filter-btn{font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer;transition:border-color .15s,transform .15s}
+.filter-btn:hover{border-color:var(--cyan);transform:translateY(-1px)}
+.filter-btn.active{background:linear-gradient(135deg,var(--cyan),var(--violet));border:none;color:#06121A}
+.actions{display:flex;gap:10px;margin-top:16px}
+.btn{font-family:inherit;font-size:13px;font-weight:600;padding:9px 18px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--violet));border:none;color:#06121A}
+footer{padding:14px 32px 26px;color:var(--muted);font-size:12.5px;text-align:center}
+footer a{color:var(--cyan);text-decoration:none}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+  <header>
+    <h1>照片滤镜<span class="accent">工坊</span></h1>
+    <p class="tagline">上传一张照片，一键应用滤镜效果，本地处理，不上传服务器。</p>
+  </header>
+
+  <main>
+    <div id="dropzone" class="dropzone">
+      <div>点击选择照片，或拖拽照片到这里</div>
+      <p>支持 JPG / PNG，处理全部在你的浏览器里完成</p>
+      <input type="file" id="fileInput" accept="image/*">
+    </div>
+
+    <div id="stage" class="stage">
+      <canvas id="canvas"></canvas>
+      <div class="filters">
+        <button class="filter-btn active" data-filter="none">原图</button>
+        <button class="filter-btn" data-filter="grayscale">灰度</button>
+        <button class="filter-btn" data-filter="sepia">复古</button>
+        <button class="filter-btn" data-filter="invert">反色</button>
+        <button class="filter-btn" data-filter="posterize">色调分离</button>
+        <button class="filter-btn" data-filter="pixelate">马赛克</button>
+        <button class="filter-btn" data-filter="cyberpunk">赛博朋克</button>
+      </div>
+      <div class="actions">
+        <button id="btnReset" class="btn">换一张</button>
+        <button id="btnDownload" class="btn btn-primary">下载图片 ↓</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>MIT 协议开源，照片全程本地处理，不上传、不追踪。</p>
+    <p>想要 AI 智能生成卡通/像素/油画/赛博朋克等风格，而不是固定滤镜？<a href="https://inzyxuashop.com/aitouxiang-yuanma.html" target="_blank" rel="noopener">看看完整版 AI 头像生成源码 →</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
